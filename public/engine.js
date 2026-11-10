@@ -1042,7 +1042,7 @@ function plantsForMonth(zone, month, perGroup){
 function plantData(q, zone){
   var hits = findPlants(q);
   if (!hits.length) return { error: "\"" + q + "\" is not in the " + P.length + "-species plant database. Do not invent planting dates for it." };
-  return hits.slice(0,3).map(function(p){
+  return hits.slice(0,4).map(function(p){
     var acts = actionsFor(p, zone);
     return { plant: p.name, scientificName: p.sci, category: p.cat, hardiness: p.hardiness,
       suitedToThisZone: suited(p, zone), bestZones: p.zones === ALL ? "all PNW zones" : p.zones.join(", "),
