@@ -1227,3 +1227,25 @@ function traditionalHerbsData(zone, which){
   return { zone: zone, list: which === "oil" ? "plants used for essential oil" : "traditional herbs", count: out.length, plants: out,
     reminder: "Describe traditional uses only, no health claims, doses or recipes. Mention safety flags. Suggest a doctor or pharmacist before using any herb medicinally." + (which === "oil" ? " " + OIL_SAFETY : "") };
 }
+/* ---------- Olives (added Nov 2026) ----------
+   Sources: OSU/eOrganic "Small-scale organic olive orchards in the PNW west of the Cascades" (2021);
+   OSU Olea project (SARE SW18-057); Raintree Nursery olive growing guide; OPB (2023) on Oregon freezes. */
+var OLIVE_PLANT = {transplant:[W(4,15,6,15)], transplantLabel:"Plant out or move pots outside", sow:null};
+HOW['olive-arbequina'] = Object.assign({}, OLIVE_PLANT, {sowNote:"Self-fertile and compact: the best olive for a pot. In the ground it's riskier: early Oregon orchards of Arbequina lost many trees in hard freezes."});
+HOW['olive-leccino']   = Object.assign({}, OLIVE_PLANT, {sowNote:"One of the hardier olives for in-ground planting. Needs a second variety nearby (e.g. Frantoio or Arbequina) for a good crop."});
+HOW['olive-frantoio']  = Object.assign({}, OLIVE_PLANT, {sowNote:"Hardier choice for in-ground planting, and self-fertile; also a good pollinizer for Leccino and Maurino."});
+HOW['olive-maurino']   = Object.assign({}, OLIVE_PLANT, {sowNote:"Hardier choice for in-ground planting; needs a second variety nearby for pollination."});
+P.push(
+  ['olive-arbequina','Olive (Arbequina)','Olea europaea ‘Arbequina’','fruit','8–10 (young trees hurt below about 25°F)',['CW','CO'],'warmSeasonVeg',false,'-'],
+  ['olive-leccino','Olive (Leccino)','Olea europaea ‘Leccino’','fruit','8–10 (young trees hurt below about 25°F)',['CW','CO'],'warmSeasonVeg',false,'-'],
+  ['olive-frantoio','Olive (Frantoio)','Olea europaea ‘Frantoio’','fruit','8–10 (young trees hurt below about 25°F)',['CW','CO'],'warmSeasonVeg',false,'-'],
+  ['olive-maurino','Olive (Maurino)','Olea europaea ‘Maurino’','fruit','8–10 (young trees hurt below about 25°F)',['CW','CO'],'warmSeasonVeg',false,'-']
+);
+var OLIVE_OW = { kind:"protect", fall:{coastal:[11,12], inland:[10,11]}, spring:{coastal:[3,4], inland:[4,5]},
+  now:{ fall:"Potted olives: move to an unheated, frost-free spot when nights near the mid-20s °F. In-ground young trees: mulch and keep frost cloth ready.",
+        winter:"Water potted olives sparingly; keep them cool, not warm. Cover young in-ground trees on nights below about 25°F.",
+        spring:"Move pots back out once hard freezes end. Feed in spring and early summer only." },
+  how:{ all:"Young olives can die below about 25°F; on mature trees small branches are damaged around 17–22°F and severe damage starts around 12–15°F. Roots in a pot are more exposed than in the ground. Potted trees: when nights are forecast in the mid-20s °F, move the pot to an unheated, frost-free spot (garage with a window, cold greenhouse), then back out after the cold passes. Don't keep it warm indoors all winter: olives need about 250 hours at or below 45°F to set fruit. Water sparingly in winter (cold plus wet soil is the biggest threat). Use a fast-draining mix with coarse sand or perlite, never garden soil, and work up to a 15–20 gallon pot. Fertilize only in spring and early summer. Olives bloom in mid-June; harvest late October to November, before frosts below about 30°F damage the fruit. Raw olives must be cured (brine or lye) before eating.",
+        coastal:"In the ground, pick the warmest, sunniest spot (against a south wall), with excellent drainage or a raised mound; mulch the roots and wrap young trees in frost cloth when about 25°F is forecast. Oregon's 2013 freeze (9°F over several nights) killed many orchard trees.",
+        inland:"Inland winters are too cold for in-ground olives: grow them in pots and move them to shelter for hard freezes." } };
+['olive-arbequina','olive-leccino','olive-frantoio','olive-maurino'].forEach(function(id){ OVERWINTER[id] = OLIVE_OW; });
