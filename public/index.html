@@ -439,6 +439,14 @@ footer p{margin:0 0 6px}
   render();
 
   /* ---------- Ask ---------- */
+  /* Show the AI's light Markdown (bold, bullets) as formatting instead of raw symbols. */
+  function renderAnswer(el, text){
+    var safe = esc(text)
+      .replace(/^#{1,6}\s*/gm, "")
+      .replace(/\*\*([^*\n]+)\*\*/g, "<b>$1</b>")
+      .replace(/^\s*[-*]\s+/gm, "\u2022 ");
+    el.innerHTML = safe;
+  }
   var EXAMPLES = ["Is El Niño going to affect my winter here?", "What should I plant this month?", "Will we get less snow in the mountains this year?", "Is it too late to plant garlic?", "What should I bring in or protect for winter?"];
   $("examples").innerHTML = EXAMPLES.map(function(e){ return '<button type="button" class="ex">' + esc(e) + '</button>'; }).join("");
   var ctl = null, busy = false;
@@ -470,7 +478,7 @@ footer p{margin:0 0 6px}
         out.className = "answer muted"; out.textContent = ASK_MSG[data.error] || "Something went wrong. Try again.";
         return;
       }
-      out.className = "answer"; out.textContent = data.text;
+      out.className = "answer"; renderAnswer(out, data.text);
       $("askMeta").textContent = "Answered in " + ((Date.now() - t0)/1000).toFixed(1) + " s" +
         (typeof data.remainingToday === "number" ? " · " + data.remainingToday + " question" + (data.remainingToday === 1 ? "" : "s") + " left today" : "");
     } catch(e) {
