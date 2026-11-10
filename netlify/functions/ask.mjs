@@ -20,6 +20,7 @@ const PER_VISITOR = Number(process.env.DAILY_LIMIT_PER_VISITOR || 15);
 const TOTAL = Number(process.env.DAILY_LIMIT_TOTAL || 300);
 const MAX_QUESTION = 500;
 const MAX_ROUNDS = 6;
+const MAX_TOKENS = 2000; // room for any model thinking plus a short answer
 const API_URL = "https://api.anthropic.com/v1/messages";
 
 export const config = { path: "/api/ask" };
@@ -145,7 +146,7 @@ export default async (req, context) => {
       const last = round === MAX_ROUNDS;
       const resp = await callClaude({
         model: MODEL,
-        max_tokens: 800,
+        max_tokens: MAX_TOKENS,
         system,
         tools: toolDefs(tools),
         ...(last ? { tool_choice: { type: "none" } } : {}),
@@ -162,8 +163,11 @@ export default async (req, context) => {
         });
         continue;
       }
-      const text = blocks.filter((b) => b.type === "text").map((b) => b.text).join("\n").trim();
+      let text = blocks.filter((b) => b.type === "text").map((b) => b.text).join("\n").trim();
+      // Visible in Netlify > Logs > Functions, for diagnosing odd answers.
+      console.log(JSON.stringify({ round, stop: resp.stop_reason, usage: resp.usage, chars: text.length }));
       if (!text) return json({ error: "upstream" }, 502);
+      if (resp.stop_reason === "max_tokens") text += "\n\n(Answer cut short. Try a narrower question.)";
       return json({ text, ms: Date.now() - t0, rounds: round, remainingToday: limit.remaining });
     }
     return json({ error: "upstream" }, 502);
