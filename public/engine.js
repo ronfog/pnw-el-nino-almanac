@@ -1283,3 +1283,13 @@ plantData = function(q, zone){
   if (ASK_RULES.indexOf(oldAlt) < 0 || ASK_RULES.indexOf(oldStyle) < 0) throw new Error("ASK_RULES update anchors not found");
   ASK_RULES = ASK_RULES.replace(oldAlt, newAlt + "\n" + topic + "\n" + fun).replace(oldStyle, newStyle);
 })();
+/* ---------- Search fix: ignore generic words like "tree" when the full phrase finds nothing ---------- */
+var GENERIC_WORDS = /\b(trees?|plants?|bush(es)?|shrubs?|vines?|seeds?|seedlings?|starts?|bulbs?|varieties|variety|cultivars?|growing|grow)\b/g;
+var _findPlantsBase = findPlants;
+findPlants = function(q){
+  var r = _findPlantsBase(q);
+  if (r.length) return r;
+  var core = String(q || "").toLowerCase().replace(GENERIC_WORDS, " ").replace(/\s+/g, " ").trim();
+  return core && core !== String(q || "").toLowerCase().trim() ? _findPlantsBase(core) : r;
+};
+ASK_RULES = ASK_RULES.replace("Style: plain language, no # headings.", "Style: plain language, no # headings, no italics or single asterisks (write plant names in plain text; use **bold** only for labels).");
