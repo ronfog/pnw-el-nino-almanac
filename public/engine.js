@@ -1249,3 +1249,37 @@ var OLIVE_OW = { kind:"protect", fall:{coastal:[11,12], inland:[10,11]}, spring:
         coastal:"In the ground, pick the warmest, sunniest spot (against a south wall), with excellent drainage or a raised mound; mulch the roots and wrap young trees in frost cloth when about 25°F is forecast. Oregon's 2013 freeze (9°F over several nights) killed many orchard trees.",
         inland:"Inland winters are too cold for in-ground olives: grow them in pots and move them to shelter for hard freezes." } };
 ['olive-arbequina','olive-leccino','olive-frantoio','olive-maurino'].forEach(function(id){ OVERWINTER[id] = OLIVE_OW; });
+/* ---------- Update Nov 2026: topic answers, fun facts, hardy banana ----------
+   Sources for the banana: NC State Extension (Musa basjoo); Portland Nursery banana guide. */
+HOW['hardy-banana'] = {transplant:[W(5,1,6,15)], transplantLabel:"Plant out or move pots outside", sow:null,
+  sowNote:"Bananas? Yes. Bananas for breakfast? No. A tropical-looking plant that comes back every spring, but PNW summers are too short for edible fruit."};
+P.push(['hardy-banana','Hardy Banana (Japanese banana)','Musa basjoo','shrub','5–10 (roots to about −10°F under mulch)',['CW','CO','CC'],'warmSeasonVeg',true,'-']);
+OVERWINTER['hardy-banana'] = { kind:"protect", fall:{coastal:[11,11], inland:[10,11]}, spring:{coastal:[4,4], inland:[4,5]},
+  now:{ fall:"After frost kills the leaves: cut stems to 2–3 ft, mulch with straw and wrap the trunk in burlap or frost cloth (no plastic).", spring:"Unwrap once hard freezes end; new leaves follow fast." },
+  how:{ all:"Frost kills the leaves every fall, but the roots are hardy to about −10°F under a thick mulch, and the plant regrows 6–14 ft tall each summer. After the first frost, cut the stems to 2–3 ft, lay the leaves around the base, add straw or another mulch that doesn't hold water (to prevent trunk rot), and wrap the trunk in breathable burlap or frost cloth, never plastic. Remove the wrap in spring. Fruit, if any, is small, seedy and inedible: PNW summers are too short." } };
+
+/* Optional fun facts: quoted word for word by the Ask box, never improvised. */
+var FUN_FACTS = {
+  'hardy-banana': "Bananas? Yes. Bananas for breakfast? No. The hardy Japanese banana will happily grow 6 to 14 feet tall and make your yard look like Maui, right up until the first frost turns it to mush. Its roots shrug off about −10°F under a thick mulch, so it comes back every spring. The catch: our summers are too short for edible fruit; you might get a few tiny, seedy bananas strictly for show. So go ahead and go bananas, just keep buying yours at the store."
+};
+var _plantDataFun = plantData;
+plantData = function(q, zone){
+  var r = _plantDataFun(q, zone);
+  if (Array.isArray(r)) r.forEach(function(x){
+    var p = findPlants(x.plant)[0];
+    if (p && FUN_FACTS[p.id]) x.funFact = FUN_FACTS[p.id];
+  });
+  return r;
+};
+
+/* Ask rules: quick vs. topic answers; alternatives only for timing questions; fun facts. */
+(function(){
+  var oldAlt = "- If a plant's windows have all passed for the selected month, say when the next one opens, then call plants_to_plant_now and suggest two or three things that can go in this month instead.";
+  var newAlt = "- Only for a timing question about planting now (e.g. 'Can I plant beets now?', 'Is it too late for garlic?'): if the plant's windows have all passed for the selected month, say when the next one opens, then call plants_to_plant_now and suggest two or three things that can go in this month instead. Never add unrelated plants to a topic question.";
+  var topic = "- Topic questions (just a plant name such as 'Olive trees' or 'Tomatoes', or 'tell me about…', 'how do I grow…'): call lookup_plant, then write a short guide using only that data, with these bold labels each on its own line, skipping any with no data: **Best varieties for you** (include each variety's note, e.g. self-fertile or needs a pollinator, and which suits a pot vs. the ground), **Planting** (dates and method for the selected zone, pot vs. ground), **Care** (soil, water, feeding), **Winter** (from the overwinter field), **Harvest**. Put bullets ('- ') under each label. Up to about 250 words.";
+  var fun = "- If a lookup_plant result has a funFact, open your answer with it word for word, then add the useful details. Never make up your own jokes or puns.";
+  var oldStyle = "Style: under 140 words, plain language, no headings.";
+  var newStyle = "Style: plain language, no # headings. Quick questions: under 140 words. Topic questions: the short guide described above.";
+  if (ASK_RULES.indexOf(oldAlt) < 0 || ASK_RULES.indexOf(oldStyle) < 0) throw new Error("ASK_RULES update anchors not found");
+  ASK_RULES = ASK_RULES.replace(oldAlt, newAlt + "\n" + topic + "\n" + fun).replace(oldStyle, newStyle);
+})();
