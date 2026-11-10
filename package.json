@@ -1,0 +1,17 @@
+{
+  "name": "pnw-el-nino-almanac",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Pacific Northwest El Niño outlook and planting guide with a grounded AI Ask box.",
+  "type": "module",
+  "scripts": {
+    "sync": "node scripts/sync-engine.mjs",
+    "test": "node scripts/sync-engine.mjs && node scripts/test-ask.mjs"
+  },
+  "dependencies": {
+    "@netlify/blobs": "^11.1.9"
+  },
+  "engines": {
+    "node": ">=22.12"
+  }
+}

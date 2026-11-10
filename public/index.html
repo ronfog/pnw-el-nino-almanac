@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>PNW El Niño Almanac</title>
+<meta name="description" content="What this winter's strong El Niño means where you live in the Pacific Northwest, and what to plant or protect because of it.">
+<meta property="og:title" content="PNW El Niño Almanac">
+<meta property="og:description" content="Local El Niño outlook and planting guide for Washington, Oregon and southwest BC, with an AI Ask box grounded in the app's data.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23233b30'/%3E%3Cpath d='M16 6c6 4 8 10 4 16-2 3-6 4-8 4 0-6 1-12 4-20z' fill='%2394b575'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout: trailhead-sign header, one control bar (place + month), Ask bar, then two doors (Outlook / Garden). */
+:root{
+  --bg:#edf1ee; --surface:#fbfcfa; --surface-2:#e3e9e5; --ink:#1b2521; --ink-2:#48564f; --muted:#76837c;
+  --line:rgba(27,37,33,.12); --line-2:rgba(27,37,33,.22);
+  --warm:#bf452a; --warm-soft:#f4ddd5; --cool:#2d6a98; --cool-soft:#d8e6f0; --moss:#4d6a37; --moss-soft:#dfe8d5; --gold:#a8760f;
+  --good:#1d8a3a; --warn:#c98a00; --bad:#c23a3a;
+  --sign:#233b30; --sign-ink:#f1efe2;
+  --f-display:"Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
+  --f-body:"Source Sans 3", system-ui, -apple-system, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#111714; --surface:#18201c; --surface-2:#212b26; --ink:#e7ede9; --ink-2:#adbab3; --muted:#7f8c85;
+  --line:rgba(231,237,233,.12); --line-2:rgba(231,237,233,.24);
+  --warm:#e26d50; --warm-soft:#3b231c; --cool:#63a0cf; --cool-soft:#1c2c38; --moss:#94b575; --moss-soft:#243020; --gold:#d6a44a;
+  --good:#3fbf62; --warn:#e5a92a; --bad:#e36060; --sign:#1c2e25; --sign-ink:#e9e6d6; color-scheme:dark; } }
+:root[data-theme="dark"]{
+  --bg:#111714; --surface:#18201c; --surface-2:#212b26; --ink:#e7ede9; --ink-2:#adbab3; --muted:#7f8c85;
+  --line:rgba(231,237,233,.12); --line-2:rgba(231,237,233,.24);
+  --warm:#e26d50; --warm-soft:#3b231c; --cool:#63a0cf; --cool-soft:#1c2c38; --moss:#94b575; --moss-soft:#243020; --gold:#d6a44a;
+  --good:#3fbf62; --warn:#e5a92a; --bad:#e36060; --sign:#1c2e25; --sign-ink:#e9e6d6; color-scheme:dark; }
+*,*::before,*::after{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding-inline:18px;padding-block:0 64px}
+:focus-visible{outline:2.5px solid var(--cool);outline-offset:2px;border-radius:4px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.label{font-family:var(--f-display);font-weight:600;font-size:13px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+
+/* Sign header */
+header.sign{background:var(--sign);color:var(--sign-ink);border-bottom:4px solid var(--gold)}
+.sign-inner{max-width:1080px;margin:0 auto;padding-inline:18px;padding-block:26px 20px;display:flex;flex-direction:column;gap:14px}
+.eyebrow{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;opacity:.75}
+h1{font-family:var(--f-display);font-weight:700;font-size:clamp(34px,6vw,52px);line-height:1;margin:0;letter-spacing:.01em;text-transform:uppercase;text-wrap:balance}
+.lede{margin:0;max-width:60ch;opacity:.85;font-size:15.5px}
+.status{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(241,239,226,.28);border-radius:999px;padding:4px 12px;font-size:13.5px;white-space:nowrap}
+.chip b{font-weight:600}
+.chip .dot{width:8px;height:8px;border-radius:50%;background:#e8704f}
+.chip.stale{border-color:var(--gold);color:var(--gold)}
+
+/* Control bar */
+.controls{display:grid;grid-template-columns:minmax(200px,280px) 1fr;gap:16px;align-items:end;margin-top:22px}
+@media (max-width:720px){.controls{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+select,input[type=text]{font:inherit;font-size:15px;color:var(--ink);background:var(--surface);border:1px solid var(--line-2);border-radius:8px;padding:9px 11px;width:100%}
+.months{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
+.mchip{flex:0 0 auto;font:inherit;font-family:var(--f-display);font-weight:600;font-size:15px;letter-spacing:.03em;padding:7px 11px 6px;border-radius:8px;border:1px solid var(--line-2);background:var(--surface);color:var(--ink-2);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:58px}
+.mchip .bar{width:100%;height:3px;border-radius:2px;background:var(--surface-2);overflow:hidden}
+.mchip .bar i{display:block;height:100%;background:var(--ink-2)}
+.mchip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.mchip[aria-pressed="true"] .bar{background:rgba(127,127,127,.35)}
+.mchip[aria-pressed="true"] .bar i{background:var(--bg)}
+
+/* Ask */
+.ask{margin-top:20px;background:var(--surface);border:1px solid var(--line-2);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.ask-head{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline}
+.ask-head h2{font-family:var(--f-display);font-size:22px;margin:0;text-transform:uppercase;letter-spacing:.03em}
+.ask-row{display:flex;gap:8px}
+.ask-row input{flex:1;min-width:0}
+.btn{font:inherit;font-weight:600;font-size:15px;border-radius:8px;padding:9px 16px;cursor:pointer;border:1px solid var(--ink);background:var(--ink);color:var(--bg);white-space:nowrap}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line-2)}
+.btn:disabled{opacity:.5;cursor:default}
+.examples{display:flex;flex-wrap:wrap;gap:6px}
+.ex{font:inherit;font-size:13.5px;background:var(--surface-2);color:var(--ink-2);border:0;border-radius:999px;padding:5px 11px;cursor:pointer;text-align:left}
+.ex:hover{color:var(--ink)}
+.answer{background:var(--bg);border-radius:10px;padding:12px 14px;white-space:pre-wrap;font-size:15.5px;min-height:3em}
+.answer.muted{color:var(--muted);font-style:italic}
+.ask-meta{font-size:12.5px;color:var(--muted)}
+.ask-off{font-size:14px;color:var(--ink-2)}
+
+/* Tabs */
+.tabs{display:flex;gap:4px;margin-top:28px;border-bottom:2px solid var(--ink)}
+.tab{font:inherit;font-family:var(--f-display);font-weight:600;font-size:20px;letter-spacing:.04em;text-transform:uppercase;background:none;border:0;padding:8px 16px 9px;color:var(--muted);cursor:pointer;border-radius:8px 8px 0 0}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--bg)}
+.tab .for{font-family:var(--f-body);font-weight:400;font-size:12.5px;text-transform:none;letter-spacing:0;margin-left:6px;opacity:.75}
+.panel{padding-top:22px}
+
+/* Outlook */
+.glance{display:grid;grid-template-columns:1.2fr 1fr;gap:18px}
+@media (max-width:820px){.glance{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;min-width:0}
+.card h3{font-family:var(--f-display);font-size:22px;margin:0 0 2px;text-transform:uppercase;letter-spacing:.02em}
+.sub{color:var(--muted);font-size:14px;margin:0 0 14px}
+.lean{display:grid;grid-template-columns:128px 1fr;gap:10px 14px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.lean:first-of-type{border-top:0}
+.lean .k{font-family:var(--f-display);font-weight:600;font-size:15px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-2)}
+.lean .v{font-size:17px;font-weight:600}
+.lean .c{grid-column:2;font-size:13px;color:var(--muted);margin-top:-6px}
+.scale{display:flex;gap:4px;margin-top:6px}
+.scale i{flex:1;height:6px;border-radius:3px;background:var(--surface-2)}
+.narr{color:var(--ink-2);font-size:15px;margin:12px 0 0}
+.region{background:var(--moss-soft);border-radius:10px;padding:12px 14px;font-size:14.5px;color:var(--ink)}
+.region b{display:block;font-family:var(--f-display);text-transform:uppercase;letter-spacing:.05em;font-size:14px;color:var(--moss);margin-bottom:2px}
+.weeks{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-top:14px}
+.wk{border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:14px;color:var(--ink-2);display:flex;flex-direction:column;gap:5px}
+.wk .t{display:flex;align-items:center;gap:7px;font-family:var(--f-display);font-weight:600;font-size:15px;color:var(--ink);text-transform:uppercase;letter-spacing:.04em}
+.wk .t i{width:9px;height:9px;border-radius:50%}
+.check{margin-top:18px}
+.check-row{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;padding:9px 0;border-top:1px solid var(--line);font-size:14.5px}
+.check-row .when{font-family:var(--f-mono);font-size:12.5px;color:var(--muted);min-width:78px}
+.badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--f-display);font-weight:600;font-size:14px;text-transform:uppercase;letter-spacing:.05em}
+.badge i{width:9px;height:9px;border-radius:50%}
+.small{font-size:13px;color:var(--muted)}
+
+/* Garden */
+.garden-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;align-items:flex-end;margin-bottom:14px}
+.plist{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:10px}
+.plant{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.plant .n{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.plant h4{margin:0;font-size:16.5px;font-weight:700}
+.plant .sci{font-style:italic;font-size:12.5px;color:var(--muted)}
+.cat{font-family:var(--f-mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;padding:2px 8px;border-radius:999px;background:var(--moss-soft);color:var(--moss);white-space:nowrap}
+.win{font-family:var(--f-mono);font-size:13px;color:var(--ink)}
+.shift{font-size:12px;color:var(--warm)}
+.warnline{font-size:13px;color:var(--bad);font-weight:600}
+.pnote{font-size:13.5px;color:var(--ink-2)}
+.gh{font-family:var(--f-display);font-size:24px;margin:0;text-transform:uppercase}
+.group{margin-bottom:22px}
+.group-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.group-h h4{margin:0;font-family:var(--f-display);font-weight:600;font-size:19px;text-transform:uppercase;letter-spacing:.04em;color:var(--moss)}
+.how{display:grid;grid-template-columns:1fr;gap:1px;margin:4px 0 2px}
+.how dt{font-size:13px;color:var(--ink-2);font-weight:600}
+.how dd{margin:0 0 6px}
+.legal{font-size:13.5px;font-weight:600;color:var(--ink);background:var(--warm-soft);border-left:3px solid var(--warm);border-radius:6px;padding:7px 10px}
+.badges{display:flex;gap:6px;flex-wrap:wrap}
+.tb{font-family:var(--f-mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;padding:2px 8px;border-radius:999px;border:1px solid var(--line-2);color:var(--ink-2)}
+.herbb{border-color:var(--moss);color:var(--moss)}
+.oilb{border-color:var(--gold);color:var(--gold)}
+.toxb{border-color:var(--bad);color:var(--bad);font-weight:600}
+.trad{background:var(--bg);border-radius:8px;padding:8px 10px;font-size:13.5px;color:var(--ink-2);display:flex;flex-direction:column;gap:4px}
+.trad-h{font-family:var(--f-display);font-weight:600;text-transform:uppercase;letter-spacing:.05em;font-size:13px;color:var(--moss)}
+.trad.oil .trad-h{color:var(--gold)}
+.trad.ow .trad-h{color:var(--cool)}
+.owb{border-color:var(--cool);color:var(--cool)}
+.owlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:10px}
+.owcard{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--cool);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.owcard .n{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.owcard h4{margin:0;font-size:16px;font-weight:700}
+.kind{font-family:var(--f-mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;padding:2px 8px;border-radius:999px;white-space:nowrap;background:var(--cool-soft);color:var(--cool)}
+.kind.protect{background:var(--warm-soft);color:var(--warm)}
+.kind.leave{background:var(--moss-soft);color:var(--moss)}
+.owcard .go{align-self:flex-start;font:inherit;font-size:13px;background:none;border:0;padding:0;color:var(--cool);cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+.ownote{font-size:13.5px;color:var(--ink-2);background:var(--cool-soft);border-radius:8px;padding:8px 12px;margin:0 0 12px}
+.trad a{color:var(--cool);font-size:13px}
+.flags{margin:2px 0 0;padding-left:18px;color:var(--bad);font-weight:600;font-size:13px}
+.fchips{display:flex;gap:8px;flex-wrap:wrap;margin:-4px 0 14px}
+.fchip{font:inherit;font-size:14px;border:1px solid var(--line-2);background:var(--surface);color:var(--ink-2);border-radius:999px;padding:5px 13px;cursor:pointer}
+.fchip[aria-pressed="true"]{background:var(--moss);border-color:var(--moss);color:var(--bg)}
+.sub.full{grid-column:1/-1;margin:0}
+.search{max-width:360px;width:100%}
+.hr{height:1px;background:var(--line);margin:26px 0 18px}
+
+footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px 30px}
+footer h5{font-family:var(--f-display);font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);margin:0 0 6px}
+footer a{color:var(--ink-2)}
+footer p{margin:0 0 6px}
+</style>
+</head>
+<body>
+<header class="sign">
+  <div class="sign-inner">
+    <div class="eyebrow">Pacific Northwest · WA · OR · SW BC · prototype</div>
+    <h1>PNW El Niño Almanac</h1>
+    <p class="lede">What this winter's strong El Niño means where you live, and what to plant or protect because of it.</p>
+    <div class="status" id="status"></div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="controls">
+    <div class="field">
+      <label class="label" for="placeSel">Your place</label>
+      <select id="placeSel"></select>
+    </div>
+    <div class="field">
+      <span class="label" id="monthsLbl">Month · bar shows forecast confidence</span>
+      <div class="months" id="months" role="group" aria-labelledby="monthsLbl"></div>
+    </div>
+  </div>
+
+  <section class="ask" aria-labelledby="askH">
+    <div class="ask-head">
+      <h2 id="askH">Ask the Almanac</h2>
+      <span class="small">Answers come only from this app's data. Limited to a few questions per visitor each day.</span>
+    </div>
+    <form class="ask-row" id="askForm">
+      <input type="text" id="askInput" placeholder="e.g. Should I plant garlic this month?" autocomplete="off" aria-label="Your question">
+      <button class="btn" id="askBtn" type="submit">Ask</button>
+      <button class="btn ghost" id="stopBtn" type="button" hidden>Stop</button>
+    </form>
+    <div class="examples" id="examples"></div>
+    <div class="answer muted" id="answer" aria-live="polite">Pick a place and month above, then ask a question or tap an example.</div>
+    <div class="ask-meta" id="askMeta"></div>
+  </section>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" id="tabOutlook" aria-selected="true" aria-controls="outlook">Outlook<span class="for">for everyone</span></button>
+    <button class="tab" role="tab" id="tabGarden" aria-selected="false" aria-controls="garden">Garden<span class="for">for growers</span></button>
+  </div>
+  <section class="panel" id="outlook" role="tabpanel" aria-labelledby="tabOutlook"></section>
+  <section class="panel" id="garden" role="tabpanel" aria-labelledby="tabGarden" hidden></section>
+
+  <footer>
+    <div>
+      <h5>Where the numbers come from</h5>
+      <p>El Niño status and monthly leans: <a href="https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.shtml" target="_blank" rel="noopener">NOAA CPC ENSO discussion</a>, Oct 8, 2026. Month-by-month leans: updated to CPC's Oct 15, 2026 seasonal outlook. Station checks: NWS monthly climate reports (CF6).</p>
+      <p>Weekly lines are tendencies from past strong El Niño winters (1997–98, 2015–16, 2023–24), not forecasts.</p>
+    </div>
+    <div>
+      <h5>Planting dates</h5>
+      <p>Vegetable, herb and annual dates (start indoors, set out transplants, sow outside) follow <a href="https://extension.wsu.edu/snohomish/fall-and-winter-vegetable-gardens-for-western-washington/" target="_blank" rel="noopener">WSU Extension</a> and OSU Extension calendars (<a href="https://ir.library.oregonstate.edu/downloads/v979v342w" target="_blank" rel="noopener">EM 9027</a>, <a href="https://extension.oregonstate.edu/catalog/pub/em-9473-central-oregon-vegetable-garden-calendar" target="_blank" rel="noopener">EM 9473</a>), shifted by zone and, for windows that open Jan–Mar only, by El Niño. Trees, shrubs and bulbs use rule-of-thumb windows. Check local frost dates before high-stakes plantings.</p>
+    </div>
+    <div>
+      <h5>Built from</h5>
+      <p>A portfolio prototype that combines the PNW El Niño Tracker and PNW Almanac. The Ask box uses Claude (Anthropic) with the app's own data.</p>
+    </div>
+  </footer>
+</div>
+
+<script src="engine.js"></script>
+<script>
+(function(){
+  "use strict";
+  var TODAY = new Date();
+  var todayISO = TODAY.toISOString().slice(0,10);
+  var state = { loc: "seattle", month: null, tab: "outlook", q: "", filter: null };
+  try { var saved = JSON.parse(localStorage.getItem("pnwAlmanac") || "{}"); if (saved.loc && LOCATIONS.some(function(l){return l.id===saved.loc;})) state.loc = saved.loc; } catch(e){}
+  var curId = TODAY.getFullYear() + "-" + String(TODAY.getMonth()+1).padStart(2,"0");
+  state.month = monthById(curId) ? curId : months[0].id;
+
+  function $(id){ return document.getElementById(id); }
+  function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+  function loc(){ return LOCATIONS.filter(function(l){ return l.id===state.loc; })[0]; }
+  function mon(){ return monthById(state.month); }
+  function save(){ try { localStorage.setItem("pnwAlmanac", JSON.stringify({loc:state.loc})); } catch(e){} }
+
+  /* Status strip */
+  var stale = todayISO > ENSO.nextUpdate;
+  function shortDate(iso){ var d = new Date(iso + "T12:00:00Z"); return ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][d.getUTCMonth()] + " " + d.getUTCDate(); }
+  $("status").innerHTML =
+    '<span class="chip"><span class="dot"></span><b>El Niño · strong</b> and strengthening</span>' +
+    '<span class="chip">Niño‑3.4 <b class="mono">+' + ENSO.nino34Latest.toFixed(1) + '°C</b> (' + ENSO.nino34LatestMonth.slice(0,3) + ')</span>' +
+    '<span class="chip">Odds of a record event <b class="mono">' + ENSO.historicOdds + '%</b> ' + ENSO.historicOddsSeason.replace(" 2026","") + '</span>' +
+    '<span class="chip' + (stale ? ' stale' : '') + '">' + (stale ? 'Data may be out of date · CPC updated ' + shortDate(ENSO.nextUpdate) : 'CPC data ' + shortDate(ENSO.issued) + ' · next update ' + shortDate(ENSO.nextUpdate)) + '</span>';
+
+  /* Place picker */
+  var groups = {WA:[], OR:[], BC:[]};
+  LOCATIONS.forEach(function(l){ groups[l.name.slice(-2)].push(l); });
+  $("placeSel").innerHTML = [["WA","Washington"],["OR","Oregon"],["BC","British Columbia"]].map(function(g){
+    return '<optgroup label="' + g[1] + '">' + groups[g[0]].map(function(l){ return '<option value="' + l.id + '">' + esc(l.name) + '</option>'; }).join("") + '</optgroup>';
+  }).join("");
+  $("placeSel").value = state.loc;
+  $("placeSel").onchange = function(){ state.loc = this.value; save(); render(); };
+
+  /* Month chips */
+  function renderMonths(){
+    $("months").innerHTML = months.map(function(m){
+      var c = Math.round((m.temp.conf + m.precip.conf)/2);
+      return '<button type="button" class="mchip" data-id="' + m.id + '" aria-pressed="' + (m.id===state.month) + '" aria-label="' + m.label + ', confidence ' + c + '%">' +
+        '<span>' + m.label.replace(" 20"," ’") + '</span><span class="bar"><i style="width:' + c + '%"></i></span></button>';
+    }).join("");
+    Array.prototype.forEach.call($("months").querySelectorAll(".mchip"), function(b){ b.onclick = function(){ state.month = b.dataset.id; render(); }; });
+  }
+
+  /* Tabs */
+  function setTab(t){
+    state.tab = t;
+    $("tabOutlook").setAttribute("aria-selected", t==="outlook"); $("tabGarden").setAttribute("aria-selected", t==="garden");
+    $("outlook").hidden = t!=="outlook"; $("garden").hidden = t!=="garden";
+  }
+  $("tabOutlook").onclick = function(){ setTab("outlook"); };
+  $("tabGarden").onclick = function(){ setTab("garden"); };
+
+  function levelColor(l){ return l>0 ? "var(--warm)" : l<0 ? "var(--cool)" : "var(--ink-2)"; }
+  function scale(l){
+    var h = ""; for (var i=-2;i<=2;i++) h += '<i style="' + (i===l ? "background:" + levelColor(l) : "") + '"></i>';
+    return '<div class="scale" aria-hidden="true">' + h + '</div>';
+  }
+  var TEMP_WORD = {"-2":"Much colder than usual","-1":"A bit colder than usual","0":"About normal","1":"A bit warmer than usual","2":"Much warmer than usual"};
+  var PREC_WORD = {"-2":"Much drier than usual","-1":"A bit drier than usual","0":"About normal (equal chances)","1":"A bit wetter than usual","2":"Much wetter than usual"};
+  var GRADE = {match:["Matched","var(--good)"], close:["Close","var(--warn)"], miss:["Missed","var(--bad)"]};
+
+  function renderOutlook(){
+    var m = mon(), l = loc(), reg = REGIONS[l.region];
+    var weeks = m.weeks.map(function(w,i){
+      var tag = w.signal>=2 ? "Strong warm/dry lean" : w.signal===1 ? "Warm/dry lean" : w.signal<0 ? "Wet or cool break" : "Near normal";
+      var col = w.signal>0 ? "var(--warm)" : w.signal<0 ? "var(--cool)" : "var(--muted)";
+      return '<div class="wk"><span class="small mono">Week ' + (i+1) + '</span><span class="t"><i style="background:' + col + '"></i>' + tag + '</span><span>' + esc(w.note) + '</span></div>';
+    }).join("");
+
+    var check = "";
+    var a = l.areaId ? areaById(l.areaId) : null;
+    if (a) {
+      var labels = ["Sep 1–7","Sep 8–14","Sep 15–21","Sep 22–28","Sep 29–30"];
+      check = '<div class="card check"><h3>Is the call holding up here?</h3><p class="sub">September\'s prediction was <b>warmer than normal, normal rain</b>. Checked against ' + esc(a.station) + ', as of ' + a.asOf.replace(/‑/g,"-") + '.</p>' +
+        a.weeks.map(function(w,i){
+          if (w.status !== "done") return '<div class="check-row"><span class="when">' + labels[i] + '</span><span class="small">Not graded yet</span></div>';
+          var g = GRADE[w.grade];
+          return '<div class="check-row"><span class="when">' + labels[i] + '</span><span class="badge"><i style="background:' + g[1] + '"></i>' + g[0] + '</span><span>Actual <span class="mono">' + (w.depF>0?"+":"") + w.depF.toFixed(1) + '°F</span> vs normal</span></div>';
+        }).join("") +
+        '<div class="check-row"><span class="when">Rain MTD</span><span class="badge"><i style="background:' + GRADE[a.precipMTD.grade][1] + '"></i>' + GRADE[a.precipMTD.grade][0] + '</span><span><span class="mono">' + a.precipMTD.actualIn.toFixed(2) + ' in</span> (' + (a.precipMTD.depIn>0?"+":"") + a.precipMTD.depIn.toFixed(2) + ' vs normal)</span></div>' +
+        (a.proxyNote ? '<p class="small" style="margin:8px 0 0">' + esc(a.proxyNote) + '</p>' : '') +
+        '<p class="small" style="margin:8px 0 0">September ran cooler than predicted at every station checked so far; the outlook expects the warm signal to build from October.</p></div>';
+    } else {
+      check = '<div class="card check"><h3>Is the call holding up here?</h3><p class="sub" style="margin:0">No station check for ' + esc(l.name) + ' yet. The nearest graded stations are listed under other places.</p></div>';
+    }
+
+    $("outlook").innerHTML =
+      '<div class="glance">' +
+        '<div class="card"><h3>' + esc(l.name.split(",")[0]) + ' · ' + m.label + '</h3><p class="sub">Regional outlook for the Pacific Northwest, read for your area.</p>' +
+          '<div class="lean"><span class="k">Temperature</span><div><div class="v" style="color:' + levelColor(m.temp.lvl) + '">' + TEMP_WORD[m.temp.lvl] + '</div>' + scale(m.temp.lvl) + '</div><span class="c">Confidence ' + m.temp.conf + '% · ' + confWord(m.temp.conf) + '</span></div>' +
+          '<div class="lean"><span class="k">Rain</span><div><div class="v" style="color:' + levelColor(-m.precip.lvl) + '">' + PREC_WORD[m.precip.lvl] + '</div>' + scale(m.precip.lvl) + '</div><span class="c">Confidence ' + m.precip.conf + '% · ' + confWord(m.precip.conf) + '</span></div>' +
+          '<div class="lean"><span class="k">Snow</span><div class="pnote" style="font-size:15px">' + esc(m.snow) + '</div></div>' +
+          '<p class="narr">' + esc(m.narrative) + '</p>' +
+        '</div>' +
+        '<div style="display:flex;flex-direction:column;gap:18px;min-width:0">' +
+          '<div class="region"><b>' + esc(reg.name) + '</b>' + esc(reg.note) + '</div>' +
+          '<div class="card"><h3>Past winters like this one</h3><p class="sub" style="margin:0">' + esc(m.analogs.join(" · ")) + '</p></div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="card" style="margin-top:18px"><h3>Week by week</h3><p class="sub" style="margin:0">How the strongest past El Niño winters leaned at this point in the season. Short wet or cool breaks are normal.</p><div class="weeks">' + weeks + '</div></div>' +
+      check;
+  }
+
+  function shiftTag(w){ return w && w.ensoShift ? ' <span class="shift">' + w.ensoShift + 'd for El Niño</span>' : ''; }
+  function fitLines(p, zone){
+    return (!suited(p, zone) ? '<div class="warnline">Not a good fit for this zone. Best in ' + p.zones.join(", ") + '.</div>' : '') +
+      (methodNote(p) ? '<div class="pnote">' + esc(methodNote(p)) + '</div>' : (p.note ? '<div class="pnote">' + esc(p.note) + '</div>' : '')) +
+      (p.frost ? '<div class="small">Frost sensitive</div>' : '');
+  }
+  /* Compact card for the monthly lists */
+  function pickCard(x, zone){
+    return '<div class="plant"><div class="n"><h4>' + esc(x.p.name) + '</h4><span class="cat">' + x.p.cat + '</span></div>' +
+      '<div class="win">' + x.w.label + shiftTag(x.w) + '</div>' + fitLines(x.p, zone) + '</div>';
+  }
+  /* Full card for search: every method */
+  function fullCard(p, zone){
+    var acts = actionsFor(p, zone);
+    return '<div class="plant"><div class="n"><h4>' + esc(p.name) + ' <span class="sci">' + esc(p.sci) + '</span></h4><span class="cat">' + p.cat + '</span></div>' + badges(p) +
+      (RESTRICTED[p.id] ? '<div class="legal">' + esc(legalNote(p.id, loc().name)) + '</div>' : '') + '<dl class="how">' + acts.map(function(a){
+        return '<dt>' + esc(a.label.replace(/ \(.*\)$/, "")) + '</dt><dd class="win">' + (a.none ? '<span class="small">Not recommended</span>' : a.wins.map(function(w){ return w.label + shiftTag(w); }).join('<br>')) + '</dd>';
+      }).join("") + '</dl>' + fitLines(p, zone) + tradBlock(p) + (OVERWINTER[p.id] ? '<div class="trad ow"><div class="trad-h">Overwintering</div><div>' + esc(overwinterText(p.id, zone)) + '</div></div>' : '') + '</div>';
+  }
+
+  var GROUPS = [
+    ["indoor", "Start seeds indoors", "House, heated garage or greenhouse"],
+    ["transplant", "Set out transplants or buy starts", "Your own seedlings or garden-center plants"],
+    ["outside", "Sow or plant outside", "Seeds, bulbs, cloves, crowns, trees and shrubs"]
+  ];
+  function renderGarden(){
+    var m = mon(), l = loc(), calM = m.month + 1;
+    var z = ZONES.filter(function(x){ return x.id===l.zone; })[0];
+    var g = plantsForMonth(l.zone, calM, 8);
+    $("garden").innerHTML =
+      '<div class="garden-top"><div><h3 class="gh">' + MFULL[calM-1] + ' in the garden</h3>' +
+      '<p class="sub" style="margin:0">' + esc(l.name) + ' · ' + esc(z.name) + ' (USDA ' + z.hardiness + ') · best fit first</p></div></div>' +
+      owSection(l.zone, calM) +
+      GROUPS.map(function(G){
+        var list = g[G[0]];
+        return '<div class="group"><div class="group-h"><h4>' + G[1] + '</h4><span class="small">' + G[2] + (list.total > list.length ? ' · showing ' + list.length + ' of ' + list.total : '') + '</span></div>' +
+          (list.length ? '<div class="plist">' + list.map(function(x){ return pickCard(x, l.zone); }).join("") + '</div>'
+            : '<p class="sub" style="margin:0">Nothing in this window in ' + MFULL[calM-1] + '.</p>') + '</div>';
+      }).join("") +
+      '<div class="hr"></div>' +
+      '<div class="garden-top"><div><h3 class="gh">Look up a plant</h3><p class="sub" style="margin:0">' + P.length + ' species. Dates adjusted for ' + esc(l.name.split(",")[0]) + '.</p></div>' +
+      '<input type="text" class="search" id="plantSearch" placeholder="Try Napa cabbage, valerian, lavender" aria-label="Search plants" value="' + esc(state.q) + '"></div>' +
+      '<div class="fchips"><button type="button" class="fchip" data-f="herbs">Traditional herbs</button><button type="button" class="fchip" data-f="oil">Essential-oil plants</button><button type="button" class="fchip" data-f="overwinter">Overwintering</button></div>' +
+      '<div class="plist" id="plantResults"></div>';
+    $("plantSearch").oninput = function(){ state.q = this.value; state.filter = null; renderSearch(); };
+    Array.prototype.forEach.call(document.querySelectorAll(".owcard .go"), function(b){ b.onclick = function(){ state.q = b.dataset.ow; state.filter = null; $("plantSearch").value = state.q; renderSearch(); $("plantSearch").scrollIntoView({behavior:"smooth", block:"start"}); }; });
+    Array.prototype.forEach.call(document.querySelectorAll(".fchip"), function(b){ b.onclick = function(){ state.filter = state.filter === b.dataset.f ? null : b.dataset.f; state.q = ""; $("plantSearch").value = ""; renderSearch(); }; });
+    renderSearch();
+  }
+  var OW_KIND = { bring:"Bring in or lift", protect:"Protect", leave:"Light care" };
+  var OW_STAGE = { fall:"Protect or bring in this month", winter:"Check on stored and protected plants", spring:"Bring back out and restart" };
+  function owSection(zone, calM){
+    if ([10,11,12,1,2,3].indexOf(calM) < 0) return '';
+    var items = overwinterNow(zone, calM); if (!items.length) return '';
+    var title = calM >= 10 ? OW_STAGE.fall : calM === 3 ? OW_STAGE.spring : OW_STAGE.winter;
+    return '<div class="group"><div class="group-h"><h4 style="color:var(--cool)">' + title + '</h4><span class="small">Overwintering · ' + items.length + ' plants</span></div>' +
+      '<p class="ownote">' + esc(OW_EL_NINO) + '</p><div class="owlist">' + items.map(function(x){
+        return '<div class="owcard"><div class="n"><h4>' + esc(x.name) + '</h4><span class="kind ' + x.kind + '">' + OW_KIND[x.kind] + '</span></div>' +
+          '<div class="pnote">' + esc(x.line) + '</div><button type="button" class="go" data-ow="' + esc(x.name) + '">Full how-to</button></div>';
+      }).join('') + '</div></div>';
+  }
+  function badges(p){
+    var t = tradInfo(p.id), ow = OVERWINTER[p.id] ? '<span class="tb owb">Overwintering guide</span>' : '';
+    if (!t) return ow ? '<div class="badges">' + ow + '</div>' : '';
+    return '<div class="badges">' + ow + (t.toxic ? '<span class="tb toxb">Poisonous</span>' : t.herb ? '<span class="tb herbb">Traditional herb</span>' : '') + (t.oil ? '<span class="tb oilb">Essential oil</span>' : '') + '</div>';
+  }
+  function tradBlock(p){
+    var t = tradInfo(p.id); if (!t) return '';
+    var h = '';
+    if (t.herb) h += '<div class="trad"><div class="trad-h">Traditional use</div><div>' + esc(t.use) + '</div>' +
+      (t.flags.length ? '<ul class="flags">' + t.flags.map(function(f){ return '<li>' + esc(f) + '</li>'; }).join('') + '</ul>' : '') +
+      (t.nih ? '<a href="' + t.nih + '" target="_blank" rel="noopener">NIH fact sheet: what the research says</a>' : '') + '</div>';
+    if (t.oil || t.oilNote) h += '<div class="trad oil"><div class="trad-h">Essential oil</div>' + (t.oilNote ? '<div>' + esc(t.oilNote) + '</div>' : '') + (t.oil ? '<div class="small">' + esc(OIL_SAFETY) + '</div>' : '') + '</div>';
+    return h;
+  }
+  var HERB_WORDS = /^(medicinal|medicine|medical|traditional|herbal|herbs?|healing|folk)( (herbs?|plants?|medicine))?$/;
+  var OW_WORDS = /^(overwinter(ing)?|winter(ize|izing)?|bring (in|indoors)|winter care)$/;
+  var OIL_WORDS = /^(essential )?oils?( plants?)?$|^essential oil/;
+  function listFor(kind){
+    if (kind === "overwinter") return P.map(plantObj).filter(function(p){ return OVERWINTER[p.id]; });
+    return P.map(plantObj).filter(function(p){ var t = tradInfo(p.id); return t && (kind === "oil" ? t.oil : t.herb); });
+  }
+  function renderSearch(){
+    var l = loc(), q = state.q.trim().toLowerCase(), hits = [], intro = '';
+    if (state.filter || HERB_WORDS.test(q) || OIL_WORDS.test(q) || OW_WORDS.test(q)) {
+      var kind = state.filter || (OW_WORDS.test(q) ? "overwinter" : OIL_WORDS.test(q) ? "oil" : "herbs");
+      hits = listFor(kind);
+      intro = kind === "overwinter"
+        ? '<p class="sub full">' + hits.length + ' plants with an overwintering how-to for ' + esc(l.name.split(",")[0]) + '. ' + esc(OW_EL_NINO) + '</p>'
+        : kind === "oil"
+        ? '<p class="sub full">' + hits.length + ' plants used for essential oil. ' + esc(OIL_SAFETY) + '</p>'
+        : '<p class="sub full">' + hits.length + ' traditional herbs. Uses are traditional, not medical advice: talk to a doctor or pharmacist before using any herb medicinally.</p>';
+    } else if (q) hits = findPlants(q);
+    Array.prototype.forEach.call(document.querySelectorAll(".fchip"), function(b){ b.setAttribute("aria-pressed", String(b.dataset.f === state.filter)); });
+    $("plantResults").innerHTML = intro + (!q && !state.filter ? "" : hits.length ? hits.map(function(p){ return fullCard(p, l.zone); }).join("")
+      : '<p class="sub">Not in the database. The Almanac only gives dates for plants it knows.</p>');
+  }
+
+  function render(){ renderMonths(); renderOutlook(); renderGarden(); }
+  render();
+
+  /* ---------- Ask ---------- */
+  var EXAMPLES = ["Is El Niño going to affect my winter here?", "What should I plant this month?", "Will we get less snow in the mountains this year?", "Is it too late to plant garlic?", "What should I bring in or protect for winter?"];
+  $("examples").innerHTML = EXAMPLES.map(function(e){ return '<button type="button" class="ex">' + esc(e) + '</button>'; }).join("");
+  var ctl = null, busy = false;
+  var ASK_MSG = {
+    rate_limited_visitor: "You've reached today's question limit for this site. Please come back tomorrow.",
+    rate_limited_total: "The Almanac has answered its full quota of questions for today. Please come back tomorrow.",
+    out_of_credits: "Ask is paused right now. Everything else on the page still works.",
+    not_configured: "Ask isn't set up on this site yet. Everything else on the page still works.",
+    busy: "The AI service is busy. Wait a minute and try again.",
+    bad_request: "Please type a question (500 characters max).",
+    timeout: "That took too long. Try a shorter or simpler question.",
+    network: "Couldn't reach the server. Check your connection and try again."
+  };
+  function setBusy(b){ busy = b; $("askBtn").disabled = b; $("stopBtn").hidden = !b; }
+  Array.prototype.forEach.call(document.querySelectorAll(".ex"), function(b){ b.onclick = function(){ $("askInput").value = b.textContent; if (!busy) ask(); }; });
+
+  function ctx(){ var l = loc(); return { locationId: l.id, monthId: state.month }; }
+  async function ask(){
+    var q = $("askInput").value.trim(); if (!q || busy) return;
+    ctl = new AbortController(); setBusy(true);
+    var out = $("answer"); out.className = "answer muted"; out.textContent = "Thinking… looking up the data for " + loc().name + ".";
+    $("askMeta").textContent = "";
+    var t0 = Date.now();
+    try {
+      var res = await fetch("/api/ask", { method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question: q.slice(0, 500), ctx: ctx() }), signal: ctl.signal });
+      var data = {}; try { data = await res.json(); } catch(e) {}
+      if (!res.ok || !data.text) {
+        out.className = "answer muted"; out.textContent = ASK_MSG[data.error] || "Something went wrong. Try again.";
+        return;
+      }
+      out.className = "answer"; out.textContent = data.text;
+      $("askMeta").textContent = "Answered in " + ((Date.now() - t0)/1000).toFixed(1) + " s" +
+        (typeof data.remainingToday === "number" ? " · " + data.remainingToday + " question" + (data.remainingToday === 1 ? "" : "s") + " left today" : "");
+    } catch(e) {
+      out.className = "answer muted";
+      out.textContent = e && e.name === "AbortError" ? "Stopped." : ASK_MSG.network;
+    } finally { setBusy(false); }
+  }
+  $("askForm").addEventListener("submit", function(ev){ ev.preventDefault(); ask(); });
+  $("stopBtn").onclick = function(){ if (ctl) ctl.abort(); };
+})();
+</script>
+
+
+</body>
+</html>
